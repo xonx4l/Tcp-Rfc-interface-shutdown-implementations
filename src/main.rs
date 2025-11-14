@@ -5,22 +5,19 @@ fn main() -> io::Result<()> {
    let mut buf = [0u8; 1504];
    loop {
    let nbytes = nic.recv(&mut buf[..])?;
-   let flags = u16::from_be_bytes([buf[0], buf[1]]);
-   let proto = u16::from_be_bytes((buf[2], buf[3]));
-   if proto != 0x0800 {
+   let eth_flags = u16::from_be_bytes([buf[0], buf[1]]);
+   let eth_proto = u16::from_be_bytes((buf[2], buf[3]));
+   if eth_proto != 0x0800 {
        continue;
    }
    
    match etherparse::Ipv4HeaderSlice::from_slice(&buf[4..nbytes]) {
     ok(p) => {
-   
-   eprintln!(
-      "read {} bytes (flags: {:x}, proto: {:x}:) {:x?})",
-      nbytes -4,
-      flags,
-      proto,
-      &buf[4..nbytes]
-    );
+      let src = p.source_addr();
+      let dst = p.destination_addr();
+      let proto = p.protocol();
+      eprintln!("got {} bytes of ipv4 packet payload", p.payload_len(),);
+      
   }
   Err(e) => {
      eprintln!("ignoring weird packet {:?}, e");
