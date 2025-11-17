@@ -16,12 +16,26 @@ fn main() -> io::Result<()> {
       let src = p.source_addr();
       let dst = p.destination_addr();
       let proto = p.protocol();
-      eprintln!("{} -> {} {}b of protocol {:x}", 
+      if proto != 0x06 {
+        // not tcp
+        continue;
+      }
+
+      match etherparse::TcpHeaderSlice::from_slice(&buf[4+p.slice().len()..]) {
+        Ok(p) => {
+          eprintln!(
+            "{} -> {} {}b of tcp port {}", 
                src,
                dst,
-               p.payload_len(),
-               proto,
+               p.slice().len(),
+               p.destination_port(),
               );
+        },
+        Err(e) => {
+          eprintln!("ignoring weird tcp packet {:?}, e");
+        },
+      }
+      
       
   }
   Err(e) => {
