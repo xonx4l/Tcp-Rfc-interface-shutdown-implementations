@@ -1,6 +1,16 @@
 use std::io;
+use std::collections::Hashmap;
+
+struct TcpState {
+
+}
+
+struct Quad {
+
+}
 
 fn main() -> io::Result<()> {
+   let mut connections = Hashmap<Quad,TcpState> = Default::default();
    let nic = tun_tap::Iface::new("tun0", tun_tap::Mode::Tun)?;
    let mut buf = [0u8; 1504];
    loop {
