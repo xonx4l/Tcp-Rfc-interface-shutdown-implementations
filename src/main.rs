@@ -1,16 +1,16 @@
 use std::io;
 use std::collections::Hashmap;
+use std::net::Ipv4Addr;
 
-struct TcpState {
-
-}
+mod tcp;
 
 struct Quad {
-
+      src: (Ipv4Addr, u16),
+      dst: (Ipv4Addr, u16),
 }
 
 fn main() -> io::Result<()> {
-   let mut connections = Hashmap<Quad,TcpState> = Default::default();
+   let mut connections = Hashmap<Quad,tcp::State> = Default::default();
    let nic = tun_tap::Iface::new("tun0", tun_tap::Mode::Tun)?;
    let mut buf = [0u8; 1504];
    loop {
@@ -33,6 +33,11 @@ fn main() -> io::Result<()> {
 
       match etherparse::TcpHeaderSlice::from_slice(&buf[4+p.slice().len()..]) {
         Ok(p) => {
+          let data = 4 + 
+          connections.entry(Quad{
+            src: (src ,p.source_port()),
+            dst: (dst, p.destination_port()),
+          }).or_default().on_packet(p,);
           eprintln!(
             "{} -> {} {}b of tcp port {}", 
                src,
