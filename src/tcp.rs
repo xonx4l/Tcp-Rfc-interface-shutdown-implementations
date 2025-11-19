@@ -14,8 +14,8 @@ impl State {
         data: &'a[u8]) {
         eprintln!(
             "{} -> {} {}b of tcp port {}", 
-               src,
-               dst,
+               iph.source_addr(),
+               iph.destination_addr(),
                p.slice().len(),
                p.destination_port(),
               );
