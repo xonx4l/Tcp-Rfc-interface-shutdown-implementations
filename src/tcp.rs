@@ -15,9 +15,10 @@ impl State {
         eprintln!(
             "{} -> {} {}b of tcp port {}", 
                iph.source_addr(),
+               tcph.source_addr(),
                iph.destination_addr(),
-               p.slice().len(),
-               p.destination_port(),
+               tcph.destination_addr(),
+               data.len(),
               );
     }
 }
