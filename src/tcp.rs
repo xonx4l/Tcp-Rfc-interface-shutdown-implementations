@@ -18,6 +18,16 @@ impl State {
         iph: etherparse::Ipv4HeaderSlice<'a>, 
         tcph: etherparse::TcpHeaderSlice<'a>, 
         data: &'a[u8]) {
+            match *self{
+                State::Closed => {
+                    return;
+                }
+                State::Listen => {
+                    if !tcph.syn(){
+                        return;
+                    }
+                }
+            }
         eprintln!(
             "{} -> {} {}b of tcp port {}", 
                iph.source_addr(),
