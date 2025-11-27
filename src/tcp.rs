@@ -1,4 +1,9 @@
-pub struct State {}
+pub enum State {
+    Closed,
+    Listen,
+    SynRcvd,
+    Estab,
+}
 
 impl Default for State {
     fn default() -> Self {
