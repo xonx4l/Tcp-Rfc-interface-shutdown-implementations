@@ -26,6 +26,18 @@ impl State {
                     if !tcph.syn(){
                         return;
                     }
+
+                    let mut syn_ack =
+                        etherparse::TcpHeader::new(tcph.destination_port(), tcph.source_port(), 0, 0);
+                        syn_ack.syn = true;
+                        syn_ack.ack = true;
+                    let mut ip = etherparse::Ipv4Header::new(
+                        syn_ack.slice().len(),
+                        64,
+                        etherparse::IpTrafficClass::Tcp,
+                        iph.destination_addr(),
+                        iph.source_addr(),
+                    );
                 }
             }
         eprintln!(
