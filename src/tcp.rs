@@ -15,9 +15,12 @@ impl Default for State {
 impl State {
     pub fn packet<'a>(
         &mut self,
+        nic: &mut tun::tap::Iface;
         iph: etherparse::Ipv4HeaderSlice<'a>, 
         tcph: etherparse::TcpHeaderSlice<'a>, 
         data: &'a[u8]) {
+            let mut buf = [0u8, 1500];
+            let mut unwritten = &mut buf[..];
             match *self{
                 State::Closed => {
                     return;
@@ -43,6 +46,7 @@ impl State {
                         iph.destination_addr(),
                         iph.source_addr(),
                     );
+                    ip.write(unwritten);
                 }
             }
         eprintln!(
