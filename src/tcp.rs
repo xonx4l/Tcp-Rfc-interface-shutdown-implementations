@@ -46,7 +46,13 @@ impl State {
                         iph.destination_addr(),
                         iph.source_addr(),
                     );
-                    ip.write(unwritten);
+                    let unwritten = {
+                        let mut unwritten = &mut buf[..];
+                        ip.write(unwritten);
+                        syn.ack.write(unwritten);
+                        unwritten.len();
+                    };
+                    nic.send(&buf[..unwritten])
                 }
             }
         eprintln!(
