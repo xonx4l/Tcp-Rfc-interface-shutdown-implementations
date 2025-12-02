@@ -12,7 +12,7 @@ struct Quad {
 
 fn main() -> io::Result<()> {
    let mut connections = Hashmap<Quad,tcp::State> = Default::default();
-   let nic = tun_tap::Iface::new("tun0", tun_tap::Mode::Tun)?;
+   let mut nic = tun_tap::Iface::new("tun0", tun_tap::Mode::Tun)?;
    let mut buf = [0u8; 1504];
    loop {
    let nbytes = nic.recv(&mut buf[..])?;

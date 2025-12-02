@@ -23,7 +23,7 @@ impl State {
             let mut unwritten = &mut buf[..];
             match *self{
                 State::Closed => {
-                    return;
+                    return Ok(0);
                 }
                 State::Listen => {
                     if !tcph.syn(){
