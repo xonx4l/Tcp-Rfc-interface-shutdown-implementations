@@ -5,6 +5,10 @@ pub enum State {
     Estab,
 }
 
+pub struct connection {
+    //
+}
+
 impl Default for State {
     fn default() -> Self {
         State{}
