@@ -43,8 +43,18 @@ impl State {
                         syn_ack.slice().len(),
                         64,
                         etherparse::IpTrafficClass::Tcp,
-                        iph.destination_addr(),
-                        iph.source_addr(),
+                        [
+                           iph.destination()[0],
+                           iph.destination()[1],
+                           iph.destination()[2],
+                           iph.destination()[3],
+                        ],
+                        [
+                           iph.source()[0],
+                           iph.source()[1],
+                           iph.source()[2],
+                           iph.source()[3],
+                        ],
                     );
                     let unwritten = {
                         let mut unwritten = &mut buf[..];

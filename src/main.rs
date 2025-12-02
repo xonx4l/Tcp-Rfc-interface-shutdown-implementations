@@ -37,7 +37,7 @@ fn main() -> io::Result<()> {
           connections.entry(Quad{
             src: (src ,p.source_port()),
             dst: (dst, p.destination_port()),
-          }).or_default().on_packet(iph, tcph, &buf[datai..]);
+          }).or_default().on_packet(iph, tcph, &buf[datai..nbytes])?;
           eprintln!(
             "{} -> {} {}b of tcp port {}", 
                src,
