@@ -58,8 +58,8 @@ impl State {
                     );
                     let unwritten = {
                         let mut unwritten = &mut buf[..];
-                        ip.write(unwritten);
-                        syn.ack.write(unwritten);
+                        ip.write(&mut unwritten);
+                        syn.ack.write(&mut unwritten);
                         unwritten.len();
                     };
                     nic.send(&buf[..unwritten])
