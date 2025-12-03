@@ -6,8 +6,9 @@ pub enum State {
 }
 
 pub struct connection {
-    //
+    state,
 }
+
 
 impl Default for State {
     fn default() -> Self {
