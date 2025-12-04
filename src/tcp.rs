@@ -59,15 +59,20 @@ impl State {
                     self.recv.nxt = tcph.sequence_number + 1;
                     self.recv.wnd = tcph.window_size;
                     self.recv.irs = tcph.sequence_number;
+
+                    self.iss = 0;
+                    self.una = self.iss;
+                    self.nxt = self.una + 1;
+                    self.wnd = 10;
                     
                     let mut syn_ack =
                         etherparse::TcpHeader::new(
                             tcph.destination_port(), 
                             tcph.source_port(), 
-                            0,
-                            10,
+                            self.iss,
+                            self.wnd,
                         );
-                        syn_ack.acknowledgement_number = tcph.sequence_number + 1;
+                        syn_ack.acknowledgement_number = self.recv.nxt;
                         syn_ack.syn = true;
                         syn_ack.ack = true;
                     let mut ip = etherparse::Ipv4Header::new(
