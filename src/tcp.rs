@@ -5,14 +5,27 @@ pub enum State {
     Estab,
 }
 
-pub struct connection {
-    state,
+pub struct Connection {
+    state: State,
+}
+
+struct SendSequence {
+      
+    una: usize,
+    nxt: usize,
+    wnd: usize,
+    up:  bool,
+    wl1: usize,
+    wl2: usize,
+    iss: usize,
 }
 
 
-impl Default for State {
+impl Default for Connection {
     fn default() -> Self {
-        State{}
+        Connection{
+            State,
+        }
     }
     
 }
