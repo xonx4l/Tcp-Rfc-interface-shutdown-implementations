@@ -53,9 +53,13 @@ impl State {
                 }
                 State::Listen => {
                     if !tcph.syn(){
-                        return;
+                        return Ok(0);
                     }
 
+                    self.recv.nxt = tcph.sequence_number + 1;
+                    self.recv.wnd = tcph.window_size;
+                    self.recv.irs = tcph.sequence_number;
+                    
                     let mut syn_ack =
                         etherparse::TcpHeader::new(
                             tcph.destination_port(), 
