@@ -60,9 +60,10 @@ impl State {
                         etherparse::TcpHeader::new(
                             tcph.destination_port(), 
                             tcph.source_port(), 
-                            unimplemented!(),
-                            unimplemented!(),
+                            0,
+                            10,
                         );
+                        syn_ack.acknowledgement_number = tcph.sequence_number + 1;
                         syn_ack.syn = true;
                         syn_ack.ack = true;
                     let mut ip = etherparse::Ipv4Header::new(
