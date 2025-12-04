@@ -9,7 +9,7 @@ pub struct Connection {
     state: State,
 }
 
-struct SendSequence {
+struct SendSequenceSpace {
       
     una: usize,
     nxt: usize,
@@ -18,6 +18,14 @@ struct SendSequence {
     wl1: usize,
     wl2: usize,
     iss: usize,
+}
+
+struct RecvSequenceSpace {
+
+    nxt: usize,
+    wnd: usize,
+    ip:  bool,
+    irs: usize,
 }
 
 
