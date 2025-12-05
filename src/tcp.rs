@@ -38,7 +38,7 @@ impl Default for Connection {
     
 }
 
-impl State {
+impl Connection {
     pub fn packet<'a>(
         &mut self,
         nic: &mut tun::tap::Iface;
