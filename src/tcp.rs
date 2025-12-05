@@ -56,14 +56,14 @@ impl State {
                         return Ok(0);
                     }
 
-                    self.recv.nxt = tcph.sequence_number + 1;
-                    self.recv.wnd = tcph.window_size;
-                    self.recv.irs = tcph.sequence_number;
+                    self.recv.nxt = tcph.sequence_number() + 1;
+                    self.recv.wnd = tcph.window_size();
+                    self.recv.irs = tcph.sequence_number();
 
-                    self.iss = 0;
-                    self.una = self.iss;
-                    self.nxt = self.una + 1;
-                    self.wnd = 10;
+                    self.send.iss = 0;
+                    self.send.una = self.iss;
+                    self.send.nxt = self.una + 1;
+                    self.send.wnd = 10;
                     
                     let mut syn_ack =
                         etherparse::TcpHeader::new(
