@@ -11,21 +11,21 @@ pub struct Connection {
 
 struct SendSequenceSpace {
       
-    una: usize,
-    nxt: usize,
-    wnd: usize,
+    una: u32,
+    nxt: u32,
+    wnd: u16,
     up:  bool,
     wl1: usize,
     wl2: usize,
-    iss: usize,
+    iss: u32,
 }
 
 struct RecvSequenceSpace {
 
-    nxt: usize,
-    wnd: usize,
+    nxt: u32,
+    wnd: u16,
     ip:  bool,
-    irs: usize,
+    irs: u32,
 }
 
 
