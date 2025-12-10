@@ -39,12 +39,12 @@ impl Default for Connection {
 }
 
 impl Connection {
-    pub fn packet<'a>(
+    pub fn accept<'a>(
         &mut self,
         nic: &mut tun::tap::Iface;
         iph: etherparse::Ipv4HeaderSlice<'a>, 
         tcph: etherparse::TcpHeaderSlice<'a>, 
-        data: &'a[u8]) {
+        data: &'a[u8]) -> io::Result<Self> {
             let mut buf = [0u8, 1500];
             let mut unwritten = &mut buf[..];
             match *self{
