@@ -61,16 +61,16 @@ impl Connection {
                     self.recv.irs = tcph.sequence_number();
 
                     self.send.iss = 0;
-                    self.send.una = self.iss;
-                    self.send.nxt = self.una + 1;
+                    self.send.una = self.send.iss;
+                    self.send.nxt = self.send.una + 1;
                     self.send.wnd = 10;
                     
                     let mut syn_ack =
                         etherparse::TcpHeader::new(
                             tcph.destination_port(), 
                             tcph.source_port(), 
-                            self.iss,
-                            self.wnd,
+                            self.send.iss,
+                            self.send.wnd,
                         );
                         syn_ack.acknowledgement_number = self.recv.nxt;
                         syn_ack.syn = true;
