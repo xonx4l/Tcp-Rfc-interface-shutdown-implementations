@@ -46,15 +46,17 @@ impl Connection {
         tcph: etherparse::TcpHeaderSlice<'a>, 
         data: &'a[u8]) -> io::Result<Self> {
             let mut buf = [0u8, 1500];
-            let mut unwritten = &mut buf[..];
-            match *self{
-                State::Closed => {
-                    return Ok(0);
+            if !tcph.syn(){
+                return Ok(None);
+            }
+
+            let mut c = Connection {
+                state: State::SynRcvd,
+                send: SendSequenceSpace{
                 }
-                State::Listen => {
-                    if !tcph.syn(){
-                        return Ok(0);
-                    }
+                recv: RecvSequenceSpace{
+                }
+            }
 
                     self.recv.nxt = tcph.sequence_number() + 1;
                     self.recv.wnd = tcph.window_size();
@@ -100,7 +102,6 @@ impl Connection {
                     };
                     nic.send(&buf[..unwritten])
                 }
-            }
         eprintln!(
             "{} -> {} {}b of tcp port {}", 
                iph.source_addr(),
