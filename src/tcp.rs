@@ -15,8 +15,8 @@ struct SendSequenceSpace {
     nxt: u32,
     wnd: u16,
     up:  bool,
-    wl1: usize,
-    wl2: usize,
+    wl1: u32,
+    wl2: u32,
     iss: u32,
 }
 
