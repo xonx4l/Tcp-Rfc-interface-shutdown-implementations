@@ -111,4 +111,3 @@ impl Connection {
                data.len(),
               );
     }
-}
