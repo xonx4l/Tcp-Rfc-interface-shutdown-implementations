@@ -63,25 +63,16 @@ impl Connection {
                     nxt: tcph.sequence_number() + 1,
                     wnd: tcph.window_size(),
                 }
-            }
-
-                    self.recv.nxt = tcph.sequence_number() + 1;
-                    self.recv.wnd = tcph.window_size();
-                    self.recv.irs = tcph.sequence_number();
-
-                    self.send.iss = 0;
-                    self.send.una = self.send.iss;
-                    self.send.nxt = self.send.una + 1;
-                    self.send.wnd = 10;
+            };
                     
                     let mut syn_ack =
                         etherparse::TcpHeader::new(
                             tcph.destination_port(), 
                             tcph.source_port(), 
-                            self.send.iss,
-                            self.send.wnd,
+                            c.send.iss,
+                            c.send.wnd,
                         );
-                        syn_ack.acknowledgement_number = self.recv.nxt;
+                        syn_ack.acknowledgement_number = c.recv.nxt;
                         syn_ack.syn = true;
                         syn_ack.ack = true;
                     let mut ip = etherparse::Ipv4Header::new(
@@ -107,7 +98,8 @@ impl Connection {
                         syn.ack.write(&mut unwritten);
                         unwritten.len();
                     };
-                    nic.send(&buf[..unwritten])
+                    nic.send(&buf[..unwritten])?;
+                    Ok(Some(c))
                 }
         eprintln!(
             "{} -> {} {}b of tcp port {}", 
