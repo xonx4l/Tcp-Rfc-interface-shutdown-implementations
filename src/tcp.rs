@@ -50,12 +50,13 @@ impl Connection {
                 return Ok(None);
             }
 
+            let iss = 0;
             let mut c = Connection {
                 state: State::SynRcvd,
                 send: SendSequenceSpace{
-                    iss: 0,
-                    una: self.send.iss,
-                    nxt: self.send.una + 1,
+                    iss,
+                    una: iss,
+                    nxt: iss + 1,
                     wnd: 10,
                     up: false,
 
