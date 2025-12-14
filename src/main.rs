@@ -33,6 +33,7 @@ fn main() -> io::Result<()> {
 
       match etherparse::TcpHeaderSlice::from_slice(&buf[4+iph.slice().len()..]) {
         Ok(tcph) => {
+          use std::collections::hash_map::Entry;
           let datai = 4 + iph.slice.len() + tcph.slice.len();
           connections.entry(Quad{
             src: (src ,p.source_port()),
