@@ -53,15 +53,20 @@ impl Connection {
             let mut c = Connection {
                 state: State::SynRcvd,
                 send: SendSequenceSpace{
-                    iss: 0;
-                    una: self.send.iss;
-                    nxt: self.send.una + 1;
-                    wnd: 10;
+                    iss: 0,
+                    una: self.send.iss,
+                    nxt: self.send.una + 1,
+                    wnd: 10,
+                    up: false,
+
+                    wl1: 0,
+                    wl2: 0,
                 }
                 recv: RecvSequenceSpace{
                     irs: tcph.sequence_number(),
                     nxt: tcph.sequence_number() + 1,
                     wnd: tcph.window_size(),
+                    up: false,
                 }
             };
                     
