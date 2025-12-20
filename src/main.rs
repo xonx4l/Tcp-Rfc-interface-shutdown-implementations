@@ -40,7 +40,7 @@ fn main() -> io::Result<()> {
             dst: (dst, p.destination_port()),
           }) {
              Entry::Occupied(c) => {
-
+                  c.on_packet(&mut nic, iph, tcph, &buf[datai..nbytes])?;
              }
              Entry::Vacant(e) => {
               
