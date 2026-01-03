@@ -107,6 +107,17 @@ impl Connection {
                     nic.send(&buf[..unwritten])?;
                     Ok(Some(c))
                 }
+
+    pub fn on_packet<'a>(
+        &mut self,
+        nic: &mut tun_tap::Iface,
+        iph: etherparse::Ipv4HeaderSlice<'a>,
+        tcph: etherparse::TcpHeaderSlice<'a>,
+        data: &'a [u8],
+         ) -> io::Result<Option<Self>> {
+            
+         }
+
         eprintln!(
             "{} -> {} {}b of tcp port {}", 
                iph.source_addr(),
