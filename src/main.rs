@@ -60,6 +60,9 @@ fn main() -> io::Result<()> {
         },
       }     
     } 
+     Err(e) => {
+          eprintln!("ignoring weird tcp packet {:?}, e");
+        },
   }
  }  
 }
