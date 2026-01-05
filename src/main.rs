@@ -39,34 +39,27 @@ fn main() -> io::Result<()> {
             src: (src ,p.source_port()),
             dst: (dst, p.destination_port()),
           }) {
-             Entry::Occupied(c) => {
-                  c.on_packet(&mut nic, iph, tcph, &buf[datai..nbytes])?;
+             Entry::Occupied(mut c) => {
+                  c.get_mut()
+                       .on_packet(&mut nic, iph, tcph, &buf[datai..nbytes])?;
              }
-             Entry::Vacant(e) => {
-              
+             Entry::Vacant(mut e) => {
+                  if let Some(c) = tcp::connection::accept(
+                      &mut nic,
+                      iph,
+                      tcph,
+                      &buf[datai..nbytes],
+                  )? {
+                    e.insert(c);
+                  }
              }
           }
-          .or_default().on_packet(iph, tcph, &buf[datai..nbytes])?;
-          eprintln!(
-            "{} -> {} {}b of tcp port {}", 
-               src,
-               dst,
-               p.slice().len(),
-               p.destination_port(),
-              );
         },
         Err(e) => {
           eprintln!("ignoring weird tcp packet {:?}, e");
         },
-      }
-      
-      
+      }     
+    } 
   }
-  Err(e) => {
-     eprintln!("ignoring weird packet {:?}, e");
-   }
-  }
- }
-
-   
+ }  
 }
