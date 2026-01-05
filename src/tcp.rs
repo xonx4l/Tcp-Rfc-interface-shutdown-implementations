@@ -98,6 +98,11 @@ impl Connection {
                            iph.source()[3],
                         ],
                     );
+                    eprintln!("got ip header:\n{:02x}", iph);
+                    eprintln!("got tcp header:\n{:02x}", tcph);
+
+
+
                     let unwritten = {
                         let mut unwritten = &mut buf[..];
                         ip.write(&mut unwritten);
